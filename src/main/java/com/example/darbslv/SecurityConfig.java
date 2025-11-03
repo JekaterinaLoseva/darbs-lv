@@ -1,4 +1,4 @@
-package com.example.darbs_lv;
+package com.example.darbslv;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

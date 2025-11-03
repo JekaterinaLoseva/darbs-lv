@@ -1,4 +1,4 @@
-package com.example.darbs_lv;
+package com.example.darbslv;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
