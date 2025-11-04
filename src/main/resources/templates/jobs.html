@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Offers</title>
+</head>
+<body>
+<h1>Available Job Offers</h1>
+
+<table border="1">
+  <tr>
+    <th>Title</th>
+    <th>Company</th>
+    <th>Location</th>
+    <th>Date</th>
+  </tr>
+  <tr th:each="job : ${jobs}">
+    <td th:text="${job.title}"></td>
+    <td th:text="${job.company}"></td>
+    <td th:text="${job.location}"></td>
+    <td th:text="${job.publishedDate}"></td>
+  </tr>
+</table>
+
+</body>
+</html>

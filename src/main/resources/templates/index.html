@@ -1,24 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Darbs LV</title>
+    <title>Darbs.lv — Home</title>
 </head>
 <body>
-<h1>Latest Jobs</h1>
+<h1>Welcome to Darbs-lv</h1>
+<p>Find your next job in Latvia!</p>
 
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Title</th>
-        <th>Published</th>
-        <th>Link</th>
-    </tr>
-    <tr th:each="job : ${offers}">
-        <td th:text="${job.title}"></td>
-        <td th:text="${job.pubDate}"></td>
-        <td><a th:href="${job.link}" target="_blank">View</a></td>
-    </tr>
-</table>
-
+<a href="/jobs">See available job offers</a>
 </body>
 </html>
