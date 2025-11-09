@@ -1,10 +1,14 @@
 package com.example.darbslv.model;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-
+@Data
+@NoArgsConstructor
 @Entity
+@Table(name = "job_offer")
 public class JobOffer {
 
     @Id
@@ -14,63 +18,22 @@ public class JobOffer {
     private String title;
     private String company;
     private String link;
+
+    @Column(length = 2000)
     private String description;
+
     private String location;
     private LocalDate publishedDate;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public JobOffer(Long id, String title, String company, String link,
+                    String description, String location, LocalDate publishedDate) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
         this.company = company;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
         this.link = link;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
         this.location = location;
-    }
-
-    public LocalDate getPublishedDate() {
-        return publishedDate;
-    }
-
-    public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
     }
+
 }

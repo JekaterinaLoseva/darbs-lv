@@ -16,20 +16,17 @@ public class RssJobService {
         this.repository = repository;
     }
 
-    public void loadFakeJobs() {
-        repository.deleteAll();
-        for (int i = 1; i <= 5; i++) {
-            JobOffer job = new JobOffer();
-            job.setTitle("Java Developer " + i);
-            job.setCompany("Company " + i);
-            job.setLocation("Riga");
-            job.setDescription("Test job offer " + i);
-            job.setPublishedDate(LocalDate.now());
-            repository.save(job);
-        }
-    }
-
     public List<JobOffer> getAllOffers() {
-        return repository.findAll();
+        List<JobOffer> jobs = repository.findAll();
+
+        if (jobs.isEmpty()) {
+            JobOffer job1 = new JobOffer(null, "Java Developer", "Acme", "https://example.com/j1",
+                    "Backend developer role", "Riga", LocalDate.now());
+            JobOffer job2 = new JobOffer(null, "Frontend Engineer", "Beta", "https://example.com/j2",
+                    "Frontend with React", "Liepaja", LocalDate.now());
+            repository.saveAll(List.of(job1, job2));
+            jobs = repository.findAll();
+        }
+        return jobs;
     }
 }

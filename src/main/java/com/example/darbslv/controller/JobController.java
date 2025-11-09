@@ -16,7 +16,6 @@ public class JobController {
 
     @GetMapping("/jobs")
     public String showJobs(Model model) {
-        rssJobService.loadFakeJobs();
         model.addAttribute("jobs", rssJobService.getAllOffers());
         return "jobs";
     }

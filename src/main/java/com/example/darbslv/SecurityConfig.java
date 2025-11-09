@@ -13,10 +13,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                )
-                .csrf(AbstractHttpConfigurer::disable)
+                .requestMatchers("/h2-console/**").permitAll()
+                .anyRequest().permitAll()
+        )
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+                .headers(headers -> headers.frameOptions().disable())
                 .formLogin(AbstractHttpConfigurer::disable);
+
         return http.build();
     }
 }

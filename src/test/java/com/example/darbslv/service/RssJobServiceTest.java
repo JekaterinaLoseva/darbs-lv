@@ -1,9 +1,11 @@
 package com.example.darbslv.service;
 
-import com.example.darbslv.repository.JobOfferRepository;
+import com.example.darbslv.model.JobOffer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,12 +15,11 @@ public class RssJobServiceTest {
     @Autowired
     private RssJobService service;
 
-    @Autowired
-    private JobOfferRepository repository;
-
     @Test
-    void shouldLoadFakeJobs() {
-        service.loadFakeJobs();
-        assertThat(repository.findAll()).hasSize(5);
+    void shouldReturnJobOffers() {
+        List<JobOffer> jobs = service.getAllOffers();
+
+        assertThat(jobs).isNotEmpty();
+        assertThat(jobs.get(0).getTitle()).isNotBlank();
     }
 }
