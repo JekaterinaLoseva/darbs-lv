@@ -17,7 +17,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
         )
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-                .headers(headers -> headers.frameOptions().disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .formLogin(AbstractHttpConfigurer::disable);
 
         return http.build();

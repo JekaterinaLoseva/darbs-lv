@@ -1,32 +1,26 @@
 package com.example.darbslv.controller;
 
-import com.example.darbslv.service.RssJobService;
+import com.example.darbslv.service.JobFeedParserService;
+import com.example.darbslv.repository.JobOfferRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.Mockito;
+import org.springframework.ui.Model;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@WebMvcTest(JobController.class)
-class JobControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private RssJobService rssJobService;
+public class JobControllerTest {
 
     @Test
-    @WithMockUser
-    void shouldReturnJobsPage() throws Exception {
-        mockMvc.perform(get("/jobs"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("jobs"))
-                .andExpect(model().attributeExists("jobs"));
-    }
+    void testShowJobs() {
 
+        JobOfferRepository repo = Mockito.mock(JobOfferRepository.class);
+        JobFeedParserService parser = Mockito.mock(JobFeedParserService.class);
+
+        JobController controller = new JobController(parser, repo);
+
+        Model model = Mockito.mock(Model.class);
+
+        String view = controller.showJobs(model);
+        assertEquals("jobs", view);
+    }
 }

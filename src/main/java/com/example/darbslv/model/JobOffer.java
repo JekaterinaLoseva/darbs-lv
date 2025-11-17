@@ -35,5 +35,4 @@ public class JobOffer {
         this.location = location;
         this.publishedDate = publishedDate;
     }
-
 }

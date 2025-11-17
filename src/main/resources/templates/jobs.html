@@ -1,26 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Job Offers</title>
+  <meta charset="UTF-8">
+  <title>Darba sludinājumi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1>Available Job Offers</h1>
+<body class="bg-light">
+<div class="container py-4">
 
-<table border="1">
-  <tr>
-    <th>Title</th>
-    <th>Company</th>
-    <th>Location</th>
-    <th>Date</th>
-  </tr>
-  <tr th:each="job : ${jobs}">
-    <td th:text="${job.title}"></td>
-    <td th:text="${job.company}"></td>
-    <td th:text="${job.location}"></td>
-    <td th:text="${job.publishedDate}"></td>
-  </tr>
-</table>
+  <h1 class="mb-4 text-center">Darba sludinājumi</h1>
 
+  <div class="text-center mb-4">
+    <a href="/refresh" class="btn btn-success">🔄 Atjaunot datus</a>
+  </div>
+
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+    <tr>
+      <th>Nosaukums</th>
+      <th>Kompānija</th>
+      <th>Lokācija</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="job : ${jobs}">
+      <td th:text="${job.title}"></td>
+      <td th:text="${job.company}"></td>
+      <td th:text="${job.location}"></td>
+      <td><a th:href="${job.link}" target="_blank">Atvērt</a></td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
 </body>
 </html>
