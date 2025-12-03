@@ -1,14 +1,17 @@
 package com.example.darbslv.model;
+
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "job_offer")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class JobOffer {
 
     @Id
@@ -17,22 +20,20 @@ public class JobOffer {
 
     private String title;
     private String company;
-    private String link;
+    private String directLink;
 
-    @Column(length = 2000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String location;
+
     private LocalDate publishedDate;
 
-    public JobOffer(Long id, String title, String company, String link,
-                    String description, String location, LocalDate publishedDate) {
-        this.id = id;
-        this.title = title;
-        this.company = company;
-        this.link = link;
-        this.description = description;
-        this.location = location;
-        this.publishedDate = publishedDate;
-    }
+    // New fields
+    private LocalDate firstSeen;
+    private LocalDate lastSeen;
+
+    private String sourceLink;
+
+    private boolean active;
 }
