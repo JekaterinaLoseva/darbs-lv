@@ -20,19 +20,22 @@ class JobOfferRepositoryTest {
 
     @Test
     void testSaveAndFind() {
-        JobOffer job = new JobOffer();
-        job.setTitle("Test Job");
-        job.setCompany("CompanyA");
-        job.setSourceLink("https://example.com");
-        job.setDirectLink("https://example.com");
-        job.setFirstSeen(LocalDate.now());
-        job.setLastSeen(LocalDate.now());
-        job.setActive(true);
+        JobOffer job = JobOffer.builder()
+                .title("QA Engineer")
+                .company("Test Ltd")
+                .sourceLink("https://example.com")
+                .firstSeen(LocalDate.now())
+                .lastSeen(LocalDate.now())
+                .active(true)
+                .build();
 
         repo.save(job);
 
         List<JobOffer> all = repo.findAll();
+
         assertThat(all).hasSize(1);
-        assertThat(all.get(0).getTitle()).isEqualTo("Test Job");
+        assertThat(all.get(0).getTitle()).isEqualTo("QA Engineer");
+        assertThat(all.get(0).getCompany()).isEqualTo("Test Ltd");
     }
+
 }

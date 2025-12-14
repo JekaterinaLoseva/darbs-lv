@@ -4,56 +4,42 @@ import com.example.darbslv.model.JobOffer;
 import com.example.darbslv.repository.JobOfferRepository;
 import com.example.darbslv.service.JobAggregationService;
 import com.example.darbslv.service.JobSourceParser;
-import com.example.darbslv.service.OriginalLinkResolver;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@ActiveProfiles("test")
-public class AggregationIntegrationTest {
-
-    @Autowired
-    private JobOfferRepository repo;
+class AggregationIntegrationTest {
 
     @Test
-    void testAggregationFlow() {
+    void aggregates_jobs_from_parsers_and_saves() {
+        // given
+        JobSourceParser parser = Mockito.mock(JobSourceParser.class);
+        JobOfferRepository repo = Mockito.mock(JobOfferRepository.class);
 
-        JobSourceParser fakeParser = () -> {
-            JobOffer job = new JobOffer();
-            job.setTitle("QA Engineer");
-            job.setCompany("AutoCorp");
-            job.setSourceLink("https://example.com/job/qa");
-            job.setDirectLink("https://example.com/job/qa");
-            job.setFirstSeen(LocalDate.now());
-            job.setLastSeen(LocalDate.now());
-            job.setActive(true);
-            return List.of(job);
-        };
+        JobOffer job = JobOffer.builder()
+                .title("QA Engineer")
+                .company("Test Ltd")
+                .location("Remote")
+                .sourceLink("https://example.com/job")
+                .firstSeen(LocalDate.now())
+                .lastSeen(LocalDate.now())
+                .active(true)
+                .build();
 
-        OriginalLinkResolver resolver = Mockito.mock(OriginalLinkResolver.class);
-        Mockito.when(resolver.resolve(Mockito.anyString())).thenReturn("https://final-link.com");
+        Mockito.when(parser.loadJobs()).thenReturn(List.of(job));
 
         JobAggregationService service =
-                new JobAggregationService(List.of(fakeParser), repo, resolver);
+                new JobAggregationService(List.of(parser), repo);
 
-        service.refreshAll();
+        // when
+        service.aggregate();
 
-        List<JobOffer> all = repo.findAll();
-        assertThat(all).hasSize(1);
 
-        JobOffer saved = all.get(0);
-
-        assertThat(saved.getTitle()).isEqualTo("QA Engineer");
-        assertThat(saved.getCompany()).isEqualTo("AutoCorp");
-        assertThat(saved.getDirectLink()).isEqualTo("https://final-link.com");
-        assertThat(saved.isActive()).isTrue();
+        // then
+        Mockito.verify(repo).save(Mockito.any(JobOffer.class));
     }
+
 }

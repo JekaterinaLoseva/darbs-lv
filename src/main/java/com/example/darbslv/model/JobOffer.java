@@ -20,20 +20,15 @@ public class JobOffer {
 
     private String title;
     private String company;
-    private String directLink;
+    private String location;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String location;
+    private String sourceLink;
 
-    private LocalDate publishedDate;
-
-    // New fields
     private LocalDate firstSeen;
     private LocalDate lastSeen;
-
-    private String sourceLink;
 
     private boolean active;
 }

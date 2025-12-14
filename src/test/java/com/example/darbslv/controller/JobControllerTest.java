@@ -1,40 +1,48 @@
 package com.example.darbslv.controller;
 
+import com.example.darbslv.model.JobOffer;
 import com.example.darbslv.repository.JobOfferRepository;
-import com.example.darbslv.service.JobAggregationService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(MockitoExtension.class)
 class JobControllerTest {
 
-    @Test
-    void testShowJobsReturnsView() {
+    @Mock
+    JobOfferRepository repo;
 
-        JobAggregationService jobService = Mockito.mock(JobAggregationService.class);
-        JobOfferRepository repo = Mockito.mock(JobOfferRepository.class);
-        Model model = Mockito.mock(Model.class);
-
-        JobController controller = new JobController(jobService, repo);
-
-        String result = controller.jobs("all", null, model);
-
-        assertThat(result).isEqualTo("jobs");
-    }
+    @InjectMocks
+    JobController controller;
 
     @Test
-    void testRefreshCallsService() {
-        JobAggregationService jobService = Mockito.mock(JobAggregationService.class);
-        JobOfferRepository repo = Mockito.mock(JobOfferRepository.class);
+    void jobs_page_returns_jobs_list() {
+        JobOffer job = JobOffer.builder()
+                .title("QA Engineer")
+                .company("Test Ltd")
+                .location("Remote")
+                .sourceLink("https://example.com/job")
+                .firstSeen(LocalDate.now())
+                .lastSeen(LocalDate.now())
+                .active(true)
+                .build();
+
+        Mockito.when(repo.findAll()).thenReturn(List.of(job));
+
         Model model = Mockito.mock(Model.class);
 
-        JobController controller = new JobController(jobService, repo);
+        String view = controller.jobs(model);
 
-        String result = controller.refreshData(model);
-
-        Mockito.verify(jobService).refreshAll();
-        assertThat(result).isEqualTo("jobs");
+        assertThat(view).isEqualTo("jobs");
+        Mockito.verify(model).addAttribute("jobs", List.of(job));
     }
 }
